@@ -1,10 +1,17 @@
+/* eslint-disable max-classes-per-file */
 /* eslint-disable class-methods-use-this */
 /*
 https://docs.nestjs.com/controllers#controllers
 */
 
-import { Controller, Get, HttpException, HttpStatus, Logger, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Logger, Param, Post } from '@nestjs/common';
 import fs from 'fs';
+
+class ProviderRequestDto {
+  pageNumber: number;
+
+  pageSize: number;
+}
 
 @Controller()
 export class MockWebhookController {
@@ -30,15 +37,23 @@ export class MockWebhookController {
   }
 
   @Get('/api/v1.0.0/connections/:dsnpId')
-  public getConnections(@Param('dsnpId') dsnpId: string) {
+  public getConnections(@Param('dsnpId') dsnpId: string, @Body() params: ProviderRequestDto) {
     if (this.healthResponse !== HttpStatus.OK) {
       this.logger.log(`/connections returning ${this.healthResponse}`);
       throw new HttpException('Bad endpoint', this.healthResponse);
     }
 
+    const { pageNumber } = params;
+
     let filename: string = '';
-    if (fs.existsSync(`./responses/response.${dsnpId}.json`)) {
-      filename = `./responses/response.${dsnpId}.json`;
+    if (!pageNumber || Number(pageNumber) === 1) {
+      if (fs.existsSync(`./responses/response.${dsnpId}.1.json`)) {
+        filename = `./responses/response.${dsnpId}.1.json`;
+      } else if (fs.existsSync(`./responses/response.${dsnpId}.json`)) {
+        filename = `./responses/response.${dsnpId}.json`;
+      }
+    } else if (fs.existsSync(`./responses/response.${dsnpId}.${pageNumber}.json`)) {
+      filename = `./responses/response.${dsnpId}.${pageNumber}.json`;
     } else if (fs.existsSync('./responses/response.default.json')) {
       filename = './responses/response.default.json';
     }

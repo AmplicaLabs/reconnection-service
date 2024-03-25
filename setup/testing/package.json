@@ -1,0 +1,19 @@
+{
+  "name": "testing",
+  "version": "1.0.0",
+  "description": "e2e test setup",
+  "main": "index.ts",
+  "scripts": {
+    "start": "tsx index.ts"
+  },
+  "dependencies": {
+    "@frequency-chain/api-augment": "^1.11.1",
+    "@polkadot/keyring": "^12.6.2",
+    "@polkadot/types": "^10.12.4",
+    "@polkadot/util-crypto": "^12.6.2",
+    "frequency-scenario-template": "github:AmplicaLabs/frequency-scenario-template",
+    "loglevel": "^1.9.1",
+    "reconnection-service": "file:../..",
+    "tsx": "^4.7.1"
+  }
+}

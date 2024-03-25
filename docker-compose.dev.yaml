@@ -28,8 +28,11 @@ services:
       - redis_data:/data
 
   frequency:
-    image: frequencychain/instant-seal-node:latest
-    command: --sealing=interval --sealing-interval 3 --sealing-create-empty-blocks
+    image: dsnp/instant-seal-node-with-deployed-schemas:latest
+    environment:
+      - SEALING_MODE=interval
+      - SEALING_INTERVAL=3
+      - CREATE_EMPTY_BLOCKS=true
     hostname: frequency
     ports:
       - 9944:9944
@@ -40,8 +43,9 @@ services:
       - chainstorage:/data
 
   frequency-instant:
-    image: frequencychain/instant-seal-node:latest
-    command: --sealing=instant
+    image: dsnp/instant-seal-node-with-deployed-schemas:latest
+    environment:
+      - SEALING_MODE=instant
     hostname: frequency
     ports:
       - 9944:9944
@@ -67,7 +71,7 @@ services:
   reconnection-service:
     depends_on:
       - redis
-      - frequency
+      - frequency-instant
       - webhook
     build:
       context: .
