@@ -83,5 +83,6 @@ export const configModuleOptions: ConfigModuleOptions = {
       .required(),
     FREQUENCY_TX_TIMEOUT_SECONDS: Joi.number().min(12).default(60),
     DEAD_LETTER_JOB_PREFIX: Joi.string().default('dead-letter:'),
+    CONNECTIONS_PER_PROVIDER_RESPONSE_PAGE: Joi.number().min(1).default(100),
   }),
 };

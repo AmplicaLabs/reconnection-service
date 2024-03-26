@@ -148,10 +148,10 @@ export class ReconnectionGraphService {
 
   async getUserGraphFromProvider(dsnpUserId: MessageSourceId | string, providerId: ProviderId | string): Promise<any> {
     const providerAPI = this.providerWebhookService.providerApi;
-
+    const pageSize = this.configService.getPageSize();
     const params = {
       pageNumber: 1,
-      pageSize: 100, // TODO: Determine correct value for production
+      pageSize,
     };
 
     const allConnections: ProviderGraph[] = [];
